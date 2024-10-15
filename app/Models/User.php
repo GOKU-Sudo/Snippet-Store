@@ -44,4 +44,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function snippets()
+    {
+        return $this->hasMany(Snippet::class);
+    }
 }
