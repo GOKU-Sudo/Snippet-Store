@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\LoginController as AdminLoginController;
 use App\Http\Controllers\admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\SnippetController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
@@ -49,4 +50,13 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get("logout", [AdminLoginController::class, 'logout'])->name("admin.logout");
     });
 });
+
+//=============
+//snippet testing
+Route::get("getsnippets", [SnippetController::class, 'index'])->name("getsnippets");
+Route::get("homeview", function(){
+    return view('homeview');
+});
+
+
 
