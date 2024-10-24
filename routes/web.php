@@ -5,7 +5,7 @@ use App\Http\Controllers\admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\SnippetController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SnippetDashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,7 +17,7 @@ Route::group(['prefix' => 'account'], function () {
     Route::group(['middleware' => 'guest'], function () {
         Route::get("login", [LoginController::class, 'index'])->name("account.login");
         Route::get("register", [LoginController::class, 'register'])->name("account.register");
-        Route::post("process-Register", [LoginController::class, 'processRegister'])->name("account.processRegister");
+        Route::post("process-register", [LoginController::class, 'processRegister'])->name("account.processRegister");
         Route::post("authenticate", [LoginController::class, 'authenticate'])->name("account.authenticate");
     });
 
@@ -26,7 +26,7 @@ Route::group(['prefix' => 'account'], function () {
 
         Route::get("logout", [LoginController::class, 'logout'])->name("account.logout");
 
-        Route::get("dashboard", [DashboardController::class, 'dashboard'])->name("account.dashboard");
+        Route::get("snippet-dashboard", [SnippetDashboardController::class, 'index'])->name("account.snippet-dashboard");
     });
 });
 
@@ -51,12 +51,16 @@ Route::group(['prefix' => 'admin'], function () {
     });
 });
 
+
+
+
+
+
+
 //=============
 //snippet testing
-Route::get("getsnippets", [SnippetController::class, 'index'])->name("getsnippets");
-Route::get("homeview", function(){
-    return view('homeview');
-});
 
 
-
+Route::post('snippets', [SnippetDashboardController::class, 'snippetStore'])->name('snippets.store');
+Route::delete('snippetdelete/{id}', [SnippetDashboardController::class, 'snippetDelete'])->name('snippets.delete');
+Route::put('snippetfavorite/{id}', [SnippetDashboardController::class, 'snippetFavorite'])->name('snippets.favorite');

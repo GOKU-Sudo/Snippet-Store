@@ -27,7 +27,7 @@ class LoginController extends Controller // Define the LoginController class tha
                     Auth::logout();
                     return redirect()->route("account.login")->with('error',"Either email or password is incorrect"); // Redirect back to the login route with an error message if the user is not a user
                 }
-                return redirect()->route("account.dashboard");
+                return redirect()->route("account.snippet-dashboard");
 
             }
             else{
@@ -55,7 +55,7 @@ class LoginController extends Controller // Define the LoginController class tha
             'password_confirmation'=>'required'
         ]);
         if($validator->passes()){ // Check if the validation passes
-            $user=new User();
+            $user=new User(); // Create a new User instance
             $user->name=$request->name;
             $user->email=$request->email;
             $user->role='user';
