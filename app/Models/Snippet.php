@@ -18,6 +18,10 @@ class Snippet extends Model
         'user_id',
     ];
 
+    protected $casts = [
+        'favorite' => 'boolean'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

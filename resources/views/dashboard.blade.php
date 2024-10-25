@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,7 +40,8 @@
             color: var(--primary-color) !important;
         }
 
-        .navbar-text, .nav-link {
+        .navbar-text,
+        .nav-link {
             color: var(--text-light) !important;
         }
 
@@ -48,6 +50,7 @@
         }
 
         /* Sidebar Styling - Preserved Structure */
+        /* Sidebar Styling */
         .sidebar {
             position: fixed;
             top: 56px;
@@ -55,28 +58,62 @@
             left: 0;
             z-index: 100;
             padding: 20px 0 0;
-            background-color: rgba(0, 0, 0, 0.8);
-            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .05), 2px 0 5px 0 rgba(0, 0, 0, .05);
+            background-color: var(--bg-darker) !important;
+            /* Added !important */
+            border-right: 1px solid var(--primary-color);
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
             transition: all 0.3s;
+        }
+
+        /* Ensure position-sticky container has the correct background */
+        .sidebar .position-sticky {
+            background-color: var(--bg-darker);
         }
 
         .sidebar .nav-link {
             font-weight: 500;
-            color: var(--text-light);
+            color: var(--text-light) !important;
+            /* Added !important */
             border-radius: 0 25px 25px 0;
             padding: 10px 20px;
             margin: 5px 0;
             transition: all 0.3s ease;
         }
 
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            color: var(--primary-color);
+        .sidebar .nav-link:hover {
+            color: var(--primary-color) !important;
+            /* Added !important */
             background-color: rgba(97, 218, 251, 0.1);
+            transform: translateX(5px);
+        }
+
+        .sidebar .nav-link.active {
+            color: var(--primary-color) !important;
+            /* Added !important */
+            background-color: rgba(97, 218, 251, 0.15);
+            border-left: 3px solid var(--primary-color);
         }
 
         .sidebar .nav-link i {
             margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        /* Responsive behavior */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--primary-color);
+            }
         }
 
         /* Snippet Card Styling */
@@ -195,13 +232,15 @@
         }
 
         /* Form Controls */
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             background-color: var(--bg-dark);
             border: 1px solid var(--primary-color);
             color: var(--text-light);
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus,
+        .form-select:focus {
             background-color: var(--bg-dark);
             border-color: var(--primary-color);
             color: var(--text-light);
@@ -245,7 +284,12 @@
             border-bottom-color: var(--primary-color) !important;
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             color: var(--primary-color);
         }
 
@@ -265,10 +309,11 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Keep the existing HTML structure exactly as is -->
     <!-- The HTML content from your original file goes here unchanged -->
-     <!-- Navigation Bar -->
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
@@ -302,7 +347,8 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sticky Sidebar -->
-            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-white sidebar">
+            <!-- <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-white sidebar"> -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
                 <div class="position-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
@@ -348,7 +394,20 @@
                     <!-- @php
                         $snippets = Auth::user() ? Auth::user()->snippets : [];
                     @endphp -->
-                    @forelse ($snippets as $snippet)
+                    {{-- Add this temporarily at the top of your snippets loop --}}
+                    {{-- Add this temporarily at the top of your snippets loop --}}
+                    <!-- @if(config('app.debug'))
+                        <div class="alert alert-info">
+                            <p>Filter: {{ $filter }}</p>
+                            <p>Snippet Count: {{ $snippets->count() }}</p>
+                            <p>Favorites Count: {{ $snippets->where('favorite', true)->count() }}</p>
+                            <pre>{{ print_r($snippets->toArray(), true) }}</pre>
+                        </div>
+                    @endif -->
+                    @php
+                        $filteredSnippets = $filter === 'favorite' ? $snippets->where('favorite', true) : $snippets;
+                    @endphp
+                    @forelse ($filteredSnippets as $snippet)
                         <div class="col">
                             <div class="card h-100 snippet-card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -446,8 +505,9 @@
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
             <script>
-        console.log(@json($filter));
-        console.log(@json($snippets));
-    </script>
+                console.log(@json($filter));
+                console.log(@json($snippets));
+            </script>
 </body>
+
 </html>

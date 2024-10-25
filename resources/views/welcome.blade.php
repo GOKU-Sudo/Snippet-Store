@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snippet Store - Your Code Companion</title>
     <style>
-        body, html {
+        body,
+        html {
             height: 100%;
             margin: 0;
             font-family: 'Courier New', monospace;
             background: linear-gradient(45deg, #1a1a1a 0%, #2c3e50 100%);
             color: #e0e0e0;
         }
+
         header {
             position: fixed;
             top: 0;
@@ -24,23 +27,28 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .logo {
             font-size: 1.5em;
             font-weight: bold;
             color: #61dafb;
         }
+
         nav {
             display: flex;
             align-items: center;
         }
+
         nav a {
             color: #e0e0e0;
             text-decoration: none;
             margin-left: 1rem;
         }
+
         nav a:hover {
             color: #61dafb;
         }
+
         .login-icon {
             margin-left: 1rem;
             background-color: #61dafb;
@@ -51,21 +59,25 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
+
         .login-icon:hover {
             background-color: #282c34;
             color: #61dafb;
         }
+
         .main-content {
             height: 100vh;
             display: flex;
             flex-direction: column;
         }
+
         .container {
             flex: 1;
             perspective: 1000px;
             overflow: hidden;
             position: relative;
         }
+
         .rotating-container {
             position: absolute;
             top: 0;
@@ -75,6 +87,7 @@
             transform-style: preserve-3d;
             animation: rotate 20s infinite linear;
         }
+
         .card {
             position: absolute;
             top: 50%;
@@ -94,15 +107,37 @@
             padding: 20px;
             text-align: center;
         }
-        .card:nth-child(1) { --rotate: 0deg; }
-        .card:nth-child(2) { --rotate: 72deg; }
-        .card:nth-child(3) { --rotate: 144deg; }
-        .card:nth-child(4) { --rotate: 216deg; }
-        .card:nth-child(5) { --rotate: 288deg; }
-        @keyframes rotate {
-            from { transform: rotateY(0); }
-            to { transform: rotateY(360deg); }
+
+        .card:nth-child(1) {
+            --rotate: 0deg;
         }
+
+        .card:nth-child(2) {
+            --rotate: 72deg;
+        }
+
+        .card:nth-child(3) {
+            --rotate: 144deg;
+        }
+
+        .card:nth-child(4) {
+            --rotate: 216deg;
+        }
+
+        .card:nth-child(5) {
+            --rotate: 288deg;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotateY(0);
+            }
+
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+
         .code {
             font-family: 'Courier New', monospace;
             background-color: #282c34;
@@ -111,10 +146,12 @@
             border-radius: 5px;
             margin-top: 10px;
         }
+
         .icon {
             font-size: 2em;
             margin-bottom: 10px;
         }
+
         .scroll-indicator {
             position: absolute;
             bottom: 20px;
@@ -123,17 +160,26 @@
             font-size: 2em;
             animation: bounce 2s infinite;
         }
+
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
                 transform: translateY(0) translateX(-50%);
             }
+
             40% {
                 transform: translateY(-30px) translateX(-50%);
             }
+
             60% {
                 transform: translateY(-15px) translateX(-50%);
             }
         }
+
         .description-panel {
             min-height: 100vh;
             background-color: rgba(40, 44, 52, 0.9);
@@ -144,15 +190,18 @@
             justify-content: center;
             align-items: center;
         }
+
         .description-panel h2 {
             color: #61dafb;
             margin-bottom: 1rem;
         }
+
         .description-panel p {
             max-width: 800px;
             margin: 0 auto;
             line-height: 1.6;
         }
+
         footer {
             background-color: rgba(0, 0, 0, 0.8);
             text-align: center;
@@ -167,12 +216,15 @@
                 font-size: 1em;
                 transform: translate(-50%, -50%) rotateY(var(--rotate)) translateZ(250px);
             }
+
             .logo {
                 font-size: 1.2em;
             }
+
             nav a {
                 margin-left: 0.5rem;
             }
+
             .login-icon {
                 padding: 0.3rem 0.7rem;
             }
@@ -183,13 +235,17 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
+
             nav {
                 margin-top: 1rem;
                 flex-wrap: wrap;
             }
-            nav a, .login-icon {
+
+            nav a,
+            .login-icon {
                 margin: 0.5rem 1rem 0.5rem 0;
             }
+
             .card {
                 width: 150px;
                 height: 120px;
@@ -199,6 +255,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="logo">{ Snippet Store }</div>
@@ -207,8 +264,10 @@
             <a href="#">Browse</a>
             <a href="#">My Snippets</a>
             <a href="#">About</a>
-            <div class="login-icon" title="Login">Login</div>
-        </nav>
+            <a href="{{route('account.login')}}">
+                <div class="login-icon" title="Login">Login</div>
+        </nav></a>
+
     </header>
 
     <div class="main-content">
@@ -247,7 +306,12 @@
     <div class="description-panel">
         <h2>Welcome to Snippet Store</h2>
         <p>
-            Snippet Store is your ultimate code companion, designed to streamline your coding workflow and boost productivity. Our platform allows you to discover, save, and share code snippets across various programming languages and frameworks. Whether you're a seasoned developer or just starting out, Snippet Store provides a centralized hub for all your coding needs. With our intuitive interface, you can easily organize your snippets, collaborate with team members, and access your code library from anywhere. Say goodbye to reinventing the wheel and hello to efficient, reusable code with Snippet Store.
+            Snippet Store is your ultimate code companion, designed to streamline your coding workflow and boost
+            productivity. Our platform allows you to discover, save, and share code snippets across various programming
+            languages and frameworks. Whether you're a seasoned developer or just starting out, Snippet Store provides a
+            centralized hub for all your coding needs. With our intuitive interface, you can easily organize your
+            snippets, collaborate with team members, and access your code library from anywhere. Say goodbye to
+            reinventing the wheel and hello to efficient, reusable code with Snippet Store.
         </p>
     </div>
 
@@ -256,4 +320,5 @@
         <p>Contact: support@snippetstore.com</p>
     </footer>
 </body>
+
 </html>
