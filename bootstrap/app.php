@@ -20,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->redirectTo(
             guests: '/account/login', // Redirects unauthenticated guests to the login page
-            users:   '/account/dashboard' // Redirects authenticated users to the dashboard page
+            users:   '/account/snippet-dashboard' // Redirects authenticated users to the dashboard page
         );
     })
     ->withExceptions(function (Exceptions $exceptions) {
