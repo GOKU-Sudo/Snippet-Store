@@ -118,6 +118,10 @@
 
         /* Snippet Card Styling */
         .snippet-card {
+            height: 400px !important;
+            /* Fixed height for all cards */
+            display: flex;
+            flex-direction: column;
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             border: 1px solid var(--primary-color);
             border-radius: 15px;
@@ -136,11 +140,35 @@
             font-weight: bold;
             padding: 10px 15px;
             border-bottom: 1px solid var(--primary-color);
+            flex-shrink: 0;
+            /* Prevents header from shrinking */
         }
 
         .snippet-card .card-body {
+            flex: 1;
+            /* Takes remaining space */
             padding: 20px;
             background-color: var(--bg-darker);
+            overflow: hidden;
+            /* Hide overflow */
+            position: relative;
+        }
+
+        .snippet-card pre {
+            height: 100%;
+            margin: 0;
+            overflow: auto;
+            /* Enable scrolling */
+            background-color: var(--bg-dark);
+            border-radius: 5px;
+            padding: 15px;
+        }
+
+        .snippet-card code {
+            /* color: var(--primary-color); */
+            color: white;
+            white-space: pre;
+            word-wrap: normal;
         }
 
         .snippet-card .card-footer {
@@ -150,6 +178,32 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
+            /* Prevents footer from shrinking */
+        }
+
+        /* Scrollbar Styling */
+        .snippet-card pre::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .snippet-card pre::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        .snippet-card pre::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .snippet-card pre::-webkit-scrollbar-thumb:hover {
+            background: #4fa8c6;
+        }
+
+        /* Ensure consistent card sizes in grid */
+        .row-cols-md-3 > * {
+            margin-bottom: 1.5rem;
         }
 
         /* Button Styling */
@@ -183,13 +237,15 @@
         }
 
         .favorite-btn {
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
+            border: 1px solid #14A44D;
+            /* color: var(--primary-color); */
+            color: #14A44D
         }
 
         .copy-btn {
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
+            border: 1px solid gray;
+            /* color: var(--primary-color); */
+            color: gray;
         }
 
         .delete-btn {
@@ -197,10 +253,14 @@
             color: #dc3545;
         }
 
-        .favorite-btn:hover,
+        .favorite-btn:hover{
+            color:white;
+            background-color: #14A44D
+        }
         .copy-btn:hover {
-            background-color: var(--primary-color);
-            color: var(--bg-darker);
+            color: white;
+            /* background-color: white; */
+            background-color: grey;
         }
 
         .delete-btn:hover {
@@ -432,6 +492,9 @@
 
                                         <button class="btn btn-outline-secondary btn-sm copy-btn" title="Copy">
                                             <i class="bi bi-clipboard"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary btn-sm" title="Edit">
+                                            <i class="bi bi-pencil"></i>
                                         </button>
                                     </div>
                                     <form action="{{ route('snippets.delete', $snippet->id) }}" method="POST"
