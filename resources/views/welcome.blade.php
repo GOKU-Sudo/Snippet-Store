@@ -260,10 +260,10 @@
     <header>
         <div class="logo">{ Snippet Store }</div>
         <nav>
-            <a href="#">Home</a>
-            <a href="#">Browse</a>
-            <a href="#">My Snippets</a>
-            <a href="#">About</a>
+            <!-- <a href="#">Home</a> -->
+            <!-- <a href="#">Browse</a> -->
+            <a href="{{route('snippet.about')}}">About</a>
+            <a href="{{route('snippet.contact')}}">Contact</a>
             <a href="{{route('account.login')}}">
                 <div class="login-icon" title="Login">Login</div>
         </nav></a>

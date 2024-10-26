@@ -83,4 +83,30 @@ class SnippetDashboardController extends Controller
         
         return redirect()->back()->with('success', 'Snippet favorite status updated');
     }
+
+    public function update(Request $request, $id){
+        $snippet=Snippet::where('user_id', auth()->id())->findOrFail($id);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'language' => 'required|string',
+            'code' => 'required|string'
+        ]);
+
+        $snippet->title = $validated['title'];
+        $snippet->description = $validated['description'];
+        $snippet->language = $validated['language'];
+        $snippet->code = $validated['code'];
+        $snippet->save();
+
+        return redirect()->route('account.snippet-dashboard')->with('success', 'Updated created successfully');
+    }
+
+    public function about(){
+        return view('about');
+    }
+    public function contact(){
+        return view('contact');
+    }
 }
