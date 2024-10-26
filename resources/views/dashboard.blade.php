@@ -202,7 +202,7 @@
         }
 
         /* Ensure consistent card sizes in grid */
-        .row-cols-md-3 > * {
+        .row-cols-md-3>* {
             margin-bottom: 1.5rem;
         }
 
@@ -230,6 +230,7 @@
 
         .favorite-btn,
         .copy-btn,
+        .edit-btn,
         .delete-btn {
             padding: 5px 10px;
             border-radius: 20px;
@@ -248,15 +249,18 @@
             color: gray;
         }
 
+        .edit-btn {}
+
         .delete-btn {
             border: 1px solid #dc3545;
             color: #dc3545;
         }
 
-        .favorite-btn:hover{
-            color:white;
+        .favorite-btn:hover {
+            color: white;
             background-color: #14A44D
         }
+
         .copy-btn:hover {
             color: white;
             /* background-color: white; */
@@ -391,13 +395,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
+                        <a class="nav-link" href="{{route('snippet.about')}}">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
+                        <a class="nav-link" href="{{route('snippet.contact')}}">Contact</a>
                     </li>
                 </ul>
             </div>
@@ -451,19 +455,19 @@
 
                 <!-- Snippets Grid -->
                 <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <!-- @php
+                     <!-- @php
                         $snippets = Auth::user() ? Auth::user()->snippets : [];
                     @endphp -->
                     {{-- Add this temporarily at the top of your snippets loop --}}
                     {{-- Add this temporarily at the top of your snippets loop --}}
-                    <!-- @if(config('app.debug'))
+                     <!-- @if(config('app.debug'))
                         <div class="alert alert-info">
                             <p>Filter: {{ $filter }}</p>
                             <p>Snippet Count: {{ $snippets->count() }}</p>
                             <p>Favorites Count: {{ $snippets->where('favorite', true)->count() }}</p>
                             <pre>{{ print_r($snippets->toArray(), true) }}</pre>
                         </div>
-                    @endif -->
+                    @endif  -->
                     @php
                         $filteredSnippets = $filter === 'favorite' ? $snippets->where('favorite', true) : $snippets;
                     @endphp
@@ -493,7 +497,10 @@
                                         <button class="btn btn-outline-secondary btn-sm copy-btn" title="Copy">
                                             <i class="bi bi-clipboard"></i>
                                         </button>
-                                        <button class="btn btn-outline-secondary btn-sm" title="Edit">
+
+                                        <button type="button" class="btn btn-outline-secondary btn-sm edit-btn"
+                                            data-bs-toggle="modal" data-bs-target="#editSnippetModal-{{ $snippet->id }}"
+                                            title="Edit">
                                             <i class="bi bi-pencil"></i>
                                         </button>
                                     </div>
@@ -506,6 +513,75 @@
                                         </button>
                                     </form>
 
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Edit Snippet Modal -->
+
+                        <div class="modal fade" id="editSnippetModal-{{ $snippet->id }}" tabindex="-1"
+                            aria-labelledby="editSnippetModalLabel-{{ $snippet->id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editSnippetModalLabel-{{ $snippet->id }}">Edit Snippet
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{route('snippet.update',$snippet->id)}}" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="mb-3">
+                                                <label for="title-{{ $snippet->id }}" class="form-label">Title</label>
+                                                <input type="text" class="form-control" id="title-{{ $snippet->id }}"
+                                                    name="title" value="{{ $snippet->title }}" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="description-{{ $snippet->id }}"
+                                                    class="form-label">Description</label>
+                                                <textarea class="form-control" id="description-{{ $snippet->id }}"
+                                                    name="description" rows="3">{{ $snippet->description }}</textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="language-{{ $snippet->id }}" class="form-label">Language</label>
+                                                <select class="form-select" id="language-{{ $snippet->id }}" name="language"
+                                                    required>
+                                                    <option value="">Select a language</option>
+                                                    <option value="html" {{ $snippet->language === 'html' ? 'selected' : '' }}>HTML
+                                                    </option>
+                                                    <option value="css" {{ $snippet->language === 'css' ? 'selected' : '' }}>
+                                                        CSS
+                                                    </option>
+                                                    <option value="javascript" {{ $snippet->language === 'javascript' ? 'selected' : '' }}>JavaScript</option>
+                                                    <option value="php" {{ $snippet->language === 'php' ? 'selected' : '' }}>
+                                                        PHP
+                                                    </option>
+                                                    <option value="python" {{ $snippet->language === 'python' ? 'selected' : '' }}>
+                                                        Python</option>
+                                                    <option value="java" {{ $snippet->language === 'java' ? 'selected' : '' }}>Java
+                                                    </option>
+                                                    <option value="ruby" {{ $snippet->language === 'ruby' ? 'selected' : '' }}>Ruby
+                                                    </option>
+                                                    <option value="c" {{ $snippet->language === 'c' ? 'selected' : '' }}>C
+                                                    </option>
+                                                    <option value="cpp" {{ $snippet->language === 'cpp' ? 'selected' : '' }}>
+                                                        C++
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="code-{{ $snippet->id }}" class="form-label">Code</label>
+                                                <textarea class="form-control" id="code-{{ $snippet->id }}" name="code"
+                                                    rows="10" required>{{ $snippet->code }}</textarea>
+                                            </div>
+                                            <div class="d-grid gap-2">
+                                                <button type="submit" class="btn btn-primary">Update Snippet</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -566,10 +642,13 @@
             </div>
 
 
+
+
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
             <script>
                 console.log(@json($filter));
                 console.log(@json($snippets));
+                console.log(@json($snippet->id));
             </script>
 </body>
 

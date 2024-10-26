@@ -11,6 +11,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::group(['prefix' => 'account'], function () {
 
     // Guest middleware - only authenticated users can access the routes in this group and if the user is authenticated, they will be redirected to the dashboard page
@@ -64,3 +65,9 @@ Route::group(['prefix' => 'admin'], function () {
 Route::post('snippets', [SnippetDashboardController::class, 'snippetStore'])->name('snippets.store');
 Route::delete('snippetdelete/{id}', [SnippetDashboardController::class, 'snippetDelete'])->name('snippets.delete');
 Route::put('snippetfavorite/{id}', [SnippetDashboardController::class, 'snippetFavorite'])->name('snippets.favorite');
+Route::put('snippetupdate/{id}',[SnippetDashboardController::class,'update'])->name('snippet.update');
+
+
+//------about and contact page
+Route::get('about', [SnippetDashboardController::class,'about'])->name('snippet.about');
+Route::get('contact', [SnippetDashboardController::class,'contact'])->name('snippet.contact');
