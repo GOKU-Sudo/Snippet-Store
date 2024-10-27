@@ -24,10 +24,10 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot( Router $router): void
+    public function boot( ): void
     {
         //
-        $router->pushMiddlewareToGroup('web', RedirectIfNotSecure::class);
+        
         
     }
 
