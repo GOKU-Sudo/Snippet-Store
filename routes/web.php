@@ -72,4 +72,4 @@ Route::get('about', [SnippetDashboardController::class,'about'])->name('snippet.
 Route::get('contact', [SnippetDashboardController::class,'contact'])->name('snippet.contact');
 
 
-// URL::forceScheme('https');
+URL::forceScheme('https');
