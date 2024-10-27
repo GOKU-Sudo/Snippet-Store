@@ -70,3 +70,6 @@ Route::put('snippetupdate/{id}',[SnippetDashboardController::class,'update'])->n
 //------about and contact page
 Route::get('about', [SnippetDashboardController::class,'about'])->name('snippet.about');
 Route::get('contact', [SnippetDashboardController::class,'contact'])->name('snippet.contact');
+
+
+// URL::forceScheme('https');
