@@ -5,8 +5,7 @@ set -e
 echo "Running composer install..."
 composer install --no-dev --optimize-autoloader --working-dir=/var/www/html
 
-echo "Generating application key..."
-php artisan key:generate --force
+
 
 echo "Caching config..."
 php artisan config:cache
