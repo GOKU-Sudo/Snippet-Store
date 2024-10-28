@@ -13,7 +13,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'account'], function () {
 
-    // Guest middleware - only authenticated users can access the routes in this group and if the user is authenticated, they will be redirected to the dashboard page
+    // Guest middleware - only unauthenticated users can access the routes in this group and if the user is authenticated, they will be redirected to the dashboard page
     Route::group(['middleware' => 'guest'], function () {
         Route::get("login", [LoginController::class, 'index'])->name("account.login");
         Route::get("register", [LoginController::class, 'register'])->name("account.register");
@@ -21,7 +21,7 @@ Route::group(['prefix' => 'account'], function () {
         Route::post("authenticate", [LoginController::class, 'authenticate'])->name("account.authenticate");
     });
 
-    // Authenticated middleware- only authenticated users can access the routes in this group and if the user is not authenticated, they will be redirected to the login page
+    // Authenticated middleware- only authenticated users can access the routes in this group and if the user is  unauthenticated, they will be redirected to the login page
     Route::group(['middleware' => 'auth'], function () {
 
         Route::get("logout", [LoginController::class, 'logout'])->name("account.logout");

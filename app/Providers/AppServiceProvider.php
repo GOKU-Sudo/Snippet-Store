@@ -3,12 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Routing\Router;
-use App\Http\Middleware\RedirectIfNotSecure;
 
-use Illuminate\Routing\UrlGenerator;
-
-use Illuminate\View\Compilers\BladeCompiler;
+use Illuminate\Support\Facades\URL;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -28,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
         
     }
 
