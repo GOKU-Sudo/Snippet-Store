@@ -16,6 +16,7 @@ class LoginController extends Controller // Define the LoginController class tha
     }
 
     public function authenticate(Request $request){ // Define the authenticate method that accepts a Request object
+        
         $validator=Validator::make($request->all(), [ // Create a validator instance with the request data and validation rules
             'email'=>'required|email', // The email field is required and must be a valid email address
             'password'=>'required' // The password field is required
