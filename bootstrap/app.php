@@ -14,14 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
         //
 
         $middleware->alias([
-            'admin.guest'=>\App\Http\Middleware\AdminRedirect::class,
-            'admin.auth'=>\App\Http\Middleware\AdminAuthenticate::class
+            'auth' => \App\Http\Middleware\RedirectIfNotAuthenticated::class,
+            'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+            'admin.auth' => \App\Http\Middleware\RedirectIfNotAuthenticated::class.':admin',
+            'admin.guest' => \App\Http\Middleware\RedirectIfAuthenticated::class.':admin',
+            'invalid.method' => \App\Http\Middleware\RedirectInvalidMethod::class, // Add this line
         ]);
-
-        $middleware->redirectTo(
-            guests: '/account/login', // Redirects unauthenticated guests to the login page
-            users:   '/account/snippet-dashboard' // Redirects authenticated users to the dashboard page
-        );
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

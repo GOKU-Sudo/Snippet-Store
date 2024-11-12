@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Snippet Store - Register</title>
         <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
         <style>
             body, html {
                 height: 100%;
