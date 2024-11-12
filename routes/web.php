@@ -41,7 +41,10 @@ Route::group(['prefix' => 'account','middleware'=>'invalid.method'], function ()
         Route::post('snippets', [SnippetDashboardController::class, 'snippetStore'])->name('snippets.store');
         Route::delete('snippetdelete/{id}', [SnippetDashboardController::class, 'snippetDelete'])->name('snippets.delete');
         Route::put('snippetfavorite/{id}', [SnippetDashboardController::class, 'snippetFavorite'])->name('snippets.favorite');
-        Route::put('snippetupdate/{id}', [SnippetDashboardController::class, 'update'])->name('snippet.update');
+        Route::put('snippetupdate/{id}', [SnippetDashboardController::class, 'update'])->name('snippets.update');
+        Route::get('snippetexport', [SnippetDashboardController::class, 'export'])->name('snippets.export');
+        Route::post('snippetscopy/{id}', [SnippetDashboardController::class, 'copy'])->name('snippets.copy');
+        
     });
 });
 

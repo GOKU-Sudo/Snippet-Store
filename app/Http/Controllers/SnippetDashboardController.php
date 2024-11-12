@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Snippet;
+use League\Csv\Writer;
+use SplTempFileObject;
+
+
 
 class SnippetDashboardController extends Controller
 {
@@ -11,24 +15,24 @@ class SnippetDashboardController extends Controller
     {
         $user = auth()->user();
         $filter = $request->query('filter', 'all');
-        
+
         // Get snippets based on filter
         $query = $user->snippets();
-        
+
         if ($filter === 'favorite') {
             $snippets = $query->where('favorite', true)->get();
             \Log::info('Snippet Dashboard Request', [
-            'filter' => $filter,
-            'user_id' => $user->id,
-            'total_snippets' => $snippets->count(),
-            'query_sql' => $query->toSql(),
-            'query_bindings' => $query->getBindings()
-        ]);
+                'filter' => $filter,
+                'user_id' => $user->id,
+                'total_snippets' => $snippets->count(),
+                'query_sql' => $query->toSql(),
+                'query_bindings' => $query->getBindings()
+            ]);
         } else {
             $snippets = $query->get();
         }
 
-        \Log::info("Actual Snippets",[
+        \Log::info("Actual Snippets", [
             'snippets' => $snippets->toArray()
         ]);
 
@@ -38,7 +42,7 @@ class SnippetDashboardController extends Controller
             'filter' => $filter,
         ]);
     }
-   
+
     public function snippetStore(Request $request)
     {
         $validated = $request->validate([
@@ -47,7 +51,7 @@ class SnippetDashboardController extends Controller
             'language' => 'required|string',
             'code' => 'required|string'
         ]);
-        
+
         $snippet = new Snippet();
         $snippet->title = $validated['title'];
         $snippet->description = $validated['description'];
@@ -55,7 +59,7 @@ class SnippetDashboardController extends Controller
         $snippet->code = $validated['code'];
         $snippet->user_id = auth()->id();
         $snippet->save();
-        
+
         return redirect()->route('account.snippet-dashboard')->with('success', 'Snippet created successfully');
     }
 
@@ -63,7 +67,7 @@ class SnippetDashboardController extends Controller
     {
         $snippet = Snippet::where('user_id', auth()->id())->findOrFail($id);
         $snippet->delete();
-        
+
         return redirect()->route('account.snippet-dashboard')->with('success', 'Snippet deleted successfully');
     }
 
@@ -72,20 +76,21 @@ class SnippetDashboardController extends Controller
         $snippet = Snippet::where('user_id', auth()->id())->findOrFail($id);
         $snippet->favorite = !$snippet->favorite;
         // $snippet->favorite = $snippet->favorite ? 0 : 1;
-        
+
         $snippet->save();
-        
+
         \Log::info('Snippet Favorite Toggle', [
             'snippet_id' => $id,
             'new_favorite_status' => $snippet->favorite,
             'user_id' => auth()->id()
         ]);
-        
+
         return redirect()->back()->with('success', 'Snippet favorite status updated');
     }
 
-    public function update(Request $request, $id){
-        $snippet=Snippet::where('user_id', auth()->id())->findOrFail($id);
+    public function update(Request $request, $id)
+    {
+        $snippet = Snippet::where('user_id', auth()->id())->findOrFail($id);
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -103,10 +108,34 @@ class SnippetDashboardController extends Controller
         return redirect()->route('account.snippet-dashboard')->with('success', 'Updated created successfully');
     }
 
-    public function about(){
+    public function export(Request $request)
+    {
+        $user = $request->user();
+        $snippets = $user->snippets;
+
+        $csv = Writer::createFromFileObject(new SplTempFileObject());
+        $csv->insertOne(['Title', 'Description', 'Language', 'Code']);
+
+        foreach ($snippets as $snippet) {
+            $csv->insertOne([$snippet->title, $snippet->description, $snippet->language, $snippet->code]);
+        }
+
+        $filename = 'snippets_' . date('Y-m-d') . '.csv';
+        return response($csv->getContent())
+            ->withHeaders([
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            ]);
+    }
+
+    public function about()
+    {
         return view('about');
     }
-    public function contact(){
+    public function contact()
+    {
         return view('contact');
     }
+ 
+
 }

@@ -7,6 +7,7 @@
     <title>Snippets App</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <style>
         /* Theme Colors */
         :root {
@@ -443,8 +444,11 @@
                     <h1 class="h2">{{ $filter === 'favorite' ? 'Favorite Snippets' : 'Your Snippets' }}</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                            <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Share</button> -->
+                            <form action="{{ route('snippets.export') }}" method="GET" style="display:inline;">
+                                @csrf
+                                <button class="btn btn-sm btn-outline-secondary">Export</button>
+                            </form>
                         </div>
                         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                             data-bs-target="#createSnippetModal">
@@ -473,13 +477,14 @@
                     @endphp
                     @forelse ($filteredSnippets as $snippet)
                         <div class="col">
+                            
                             <div class="card h-100 snippet-card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     {{$snippet->title}}
                                     <span class="badge bg-secondary">{{$snippet->language}}</span>
                                 </div>
                                 <div class="card-body">
-                                    <pre><code class="language-{{$snippet->language}}">{{  $snippet->code }}</code></pre>
+                                    <pre><code class="language-{{$snippet->language}}" data-clipboard-text="{{ $snippet->code }}" >{{  $snippet->code }}</code></pre>
                                 </div>
                                 <div class="card-footer">
                                     <div>
@@ -494,9 +499,14 @@
 
                                         </form>
 
-                                        <button class="btn btn-outline-secondary btn-sm copy-btn" title="Copy">
-                                            <i class="bi bi-clipboard"></i>
-                                        </button>
+                                        <form action="{{ route('snippets.copy', $snippet->id) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            <button class="btn btn-outline-secondary btn-sm copy-btn" title="Copy">
+                                                <i class="bi bi-clipboard"></i>
+                                            </button>
+
+                                        </form>
 
                                         <button type="button" class="btn btn-outline-secondary btn-sm edit-btn"
                                             data-bs-toggle="modal" data-bs-target="#editSnippetModal-{{ $snippet->id }}"
@@ -531,7 +541,7 @@
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{{route('snippet.update',$snippet->id)}}" method="POST">
+                                        <form action="{{route('snippets.update',$snippet->id)}}" method="POST">
                                             @csrf
                                             @method('PUT')
                                             <div class="mb-3">
@@ -641,12 +651,8 @@
                 </div>
             </div>
 
-
-
-
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-            </script>
+            
 </body>
 
 </html>
