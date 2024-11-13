@@ -178,7 +178,7 @@
             <p class="contact-text">
                 Have questions or suggestions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
             </p>
-            <form class="contact-form" method="POST" action="#">
+            <form class="contact-form" method="GET" action="#">
                 @csrf
                 <div class="form-group">
                     <label class="form-label" for="name">Name</label>
